@@ -1,25 +1,24 @@
+//1번
+
 #include <iostream>
 using namespace std;
 
 class Tower {
 public:
 	int height;
+	Tower();
+	Tower(int h);
 	int getHeight();
-	int getHeight(int h);
-	int seoulTower(int h);
 };
 
-int Tower::getHeight(int h) {
-	return h;
+Tower::Tower() : Tower(1){ }
+
+Tower::Tower(int h) {
+	height = h;
 }
 
 int Tower::getHeight() {
-	return 1;
-}
-
-int Tower::seoulTower(int h) {
-	height = h;
-	return h;
+	return height;
 }
 
 int main() {
