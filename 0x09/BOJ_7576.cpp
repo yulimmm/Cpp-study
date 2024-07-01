@@ -25,7 +25,6 @@ int main()
 			cin >> board[i][j];
 			if (board[i][j] == 1) {
 				Q.push({ i,j });
-				//dist[i][j] = 0;
 			}
 			if (board[i][j] == 0) dist[i][j] = -1; //이 부분 확인
 		}
@@ -38,7 +37,7 @@ int main()
 			int nx = cur.X + dx[i];
 			int ny = cur.Y + dy[i];
 			if (nx < 0 || nx >= n || ny < 0 || ny >= m) continue;
-			if (board[nx][ny] == -1 || dist[nx][ny] >= 0) continue;
+			if (dist[nx][ny] >= 0) continue;
 			dist[nx][ny] = dist[cur.X][cur.Y] + 1;
 			Q.push({ nx,ny });
 		}
