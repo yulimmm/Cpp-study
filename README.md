@@ -13,6 +13,7 @@
 | 0x07 | 덱 |
 | 0x08 | 스택의 활용(수식의 괄호 쌍) |
 | 0x09 | BFS |
+| 0x0A | DFS |
 
 ## Note
 [노션_코테 공부](https://www.notion.so/fa909965da2345388ad213ef905a9b88?pvs=4)
