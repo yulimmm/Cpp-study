@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 using namespace std;
 
 int n,m;
@@ -27,10 +28,12 @@ void func(int k)
 
 int main()
 {
+    ios::sync_with_stdio(0); cin.tie(0);
     cin >> n >> m;
     for(int i = 0; i<n; i++){
         cin >> input_arr[i];
     }
+    sort(input_arr, input_arr+n);
     func(0);
     return 0;
 }
