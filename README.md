@@ -16,6 +16,7 @@
 | 0x0A | DFS |
 | 0x0B | 재귀 |
 | 0x0C | 백트래킹 |
+| 0x0D | 시뮬레이션 |
 
 ## Note
 [노션_코테 공부](https://www.notion.so/fa909965da2345388ad213ef905a9b88?pvs=4)
