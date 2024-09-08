@@ -1,64 +1,50 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 
-int min = 100;
-int room[10][10];
+const int MAX_SIZE = 10;
+int board[MAX_SIZE][MAX_SIZE];
 int n, m;
 
-void count_4()
-{
-    int temp = 0;
-    for(int i = 0; i<n; i++){
-        for(int j = 0; j<m; j++){
-            if(room[i][j]==0){
-                temp++;
-            }
+struct Cctv {
+    int num;
+    int x;
+    int y;
+};
+
+vector<Cctv> cctvs;
+
+void print_board() {
+    for(int i = 0; i < MAX_SIZE; ++i) {
+        for(int j = 0; j < MAX_SIZE; ++j) {
+            cout << board[i][j] << ' ';
         }
-    }
-    if(temp<min) min = temp;
-    return;
-}
-
-void mark()
-{
-    for(int i = 0; i<n; i++){
-        for(int j = 0; j<m; j++){
-            if(room[i][j]==1){
-                
-            }
-        }
+        cout << '\n';
     }
 }
 
-void back_tracking()
-{
-    
-}
-  
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
 
-int main()
-{
-    ios::sync_with_stdio(0); cin.tie(0);
-    
-    for(int i = 0; i<10; i++){
-        fill(room[i], room[i]+10, -1);
+    for(int i = 0; i < MAX_SIZE; ++i) {
+        fill(board[i], board[i] + MAX_SIZE, -1);
     }
-    
+
     cin >> n >> m;
-    //input
-    for(int i = 0; i<n; i++){
-        for(int j = 0; j<m; j++){
-            cin >> room[i][j];
-        }
-    }
-    
-    //input
-    for(int i = 0; i<n; i++){
-        for(int j = 0; j<m; j++){
-            if(room[i][j]==1){
-                
+
+    for(int i = 0; i < n; ++i) {
+        for(int j = 0; j < m; ++j) {
+            cin >> board[i][j];
+            if(board[i][j] != 0) {
+                cctvs.push_back(Cctv{board[i][j], i, j});
             }
         }
     }
+
+    for(const auto& cctv : cctvs) {
+        cout << cctv.num << ' ' << cctv.x << ' ' << cctv.y << '\n';
+    }
+
     return 0;
 }
