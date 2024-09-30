@@ -1,96 +1,85 @@
 #include <iostream>
+#include <vector>
+#include <utility>
 using namespace std;
+#define X first
+#define Y second
 
-int dx[4] = {1,0,-1,0}; //cctv1, 4번에서 사용
-int dy[4] = {0,1,0,-1};
-int cctv2_dx[2] = {1,0};
-int cctv2_dy[2] = {0,1};
-//cctv2_dx, dy = x,y 방향이랑 같음. 
-int cctv3_dx[4] = {1,-1,-1,1};
-int cctv3_dy[4] = {1,1,-1,-1};
-//cctv5는 모든 방향 
-
-int board[10][10];
-int view[10][10]; // cctv 시야
+int dx[4] = {1,0,-1,0};
+int dy[4] = {0,1,0,-1}; // 남쪽, 동쪽, 북쪽, 서쪽 순서
 int n, m;
-int cant_see = 0; // 사각지대 개수
+int board1[10][10]; // 최초에 입력받은 board를 저장할 변수
+int board2[10][10]; // 사각 지대의 개수를 세기 위해 사용할 변수
+vector<pair<int,int> > cctv; // cctv의 좌표를 저장할 변수
 
-void cctv1(int x, int y, int k)
-{   
-    int cur_x = x+1;
-    int cur_y = y+1;
-    while( cur_x < n && cur_y < m){
-        if(board[cur_x+dx[k]][cur_y+dy[k]]==6) break;
-        view[cur_x+dx[k]][cur_y+dy[k]] = 1;
-        cur_x++; cur_y++;
-    }
+bool OOB(int a, int b){ // Out Of Bounds 확인
+  return a < 0 || a >= n || b < 0 || b >= m;
 }
 
-void cctv2(int x, int y, int k)
-{   
-    int cur_x = x+1;
-    int cur_y = y+1;
-    while( cur_x < n && cur_y < m){
-        if(board[cur_x+cctv2_dx[k]][cur_y+cctv2_dy[k]]==6) break;
-        view[cur_x+cctv2_dx[k]][cur_y+cctv2_dy[k]] = 1;
-        cur_x++; cur_y++;
-    }
-    int cur_x = x-1;
-    int cur_y = y-1;
-    while( cur_x > 0 && cur_y > 0){
-        if(board[cur_x-cctv2_dx[k]][cur_y-cctv2_dy[k]]==6) break;
-        view[cur_x-cctv2_dx[k]][cur_y-cctv2_dy[k]] = 1;
-        cur_x++; cur_y++;
-    }
+// (x,y)에서 dir 방향으로 진행하면서 벽을 만날 때 까지 지나치는 모든 빈칸을 7로 바꿔버림
+void upd(int x, int y, int dir){
+  dir %= 4;
+  while(1){
+    x += dx[dir];
+    y += dy[dir];
+    if(OOB(x,y) || board2[x][y] == 6) return; // 범위를 벗어났거나 벽을 만나면 함수를 탈출
+    if(board2[x][y] != 0) continue; // 해당 칸이 빈칸이 아닐 경우(=cctv가 있을 경우) 넘어감
+    board2[x][y] = 7; // 빈칸을 7로 덮음
+  }
 }
 
-int check_cctv(int k)
-{
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < m; j++){
-            if(board[i][j]==1){
-
-            }
-
-            else if(board[i][j]==2){
-                
-            }
-
-            else if(board[i][j]==3){
-                
-            }
-
-            else if(board[i][j]==4){
-                
-            }
-
-            else if(board[i][j]==5){
-                
-            }
-        }
+int main(void) {
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  cin >> n >> m;
+  int mn = 0; // 사각 지대의 최소 크기 (=답)
+  for(int i = 0; i < n; i++){
+    for(int j = 0; j < m; j++){
+      cin >> board1[i][j];
+      if(board1[i][j] != 0 && board1[i][j] != 6)
+        cctv.push_back({i,j});
+      if(board1[i][j] == 0) mn++;
     }
-    return cant_see;
-}
-
-int main()
-{
-    ios::sync_with_stdio(0); cin.tie(0);
-    int min_cant_see = 1000;
-    cin >> n >> m;
-    //board 입력 받기
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < m; j++){
-            cin >> board[i][j];
-        }
+  }
+  // 1 << (2*cctv.size())는 4의 cctv.size()승을 의미.
+  for(int tmp = 0; tmp < (1<<(2*cctv.size())); tmp++){ // tmp를 4진법으로 뒀을 때 각 자리수를 cctv의 방향으로 생각할 것이다.
+    for(int i = 0; i < n; i++)
+      for(int j = 0; j < m; j++)
+        board2[i][j] = board1[i][j];
+    int brute = tmp;    
+    for(int i = 0; i < cctv.size(); i++){
+      int dir = brute % 4;
+      brute /= 4;
+      int x = cctv[i].X;
+      int y = cctv[i].Y; // tie(x, y) = cctv[i];로 쓰면 1줄로 줄일 수 있음
+      if(board1[x][y] == 1){
+        upd(x,y,dir);
+      }
+      else if(board1[x][y] == 2){
+        upd(x,y,dir);
+        upd(x,y,dir+2);
+      }
+      else if(board1[x][y] == 3){
+        upd(x,y,dir);
+        upd(x,y,dir+1);
+      }
+      else if(board1[x][y] == 4){
+        upd(x,y,dir);
+        upd(x,y,dir+1);
+        upd(x,y,dir+2);
+      }
+      else{ // board1[x][y] == 5
+        upd(x,y,dir);
+        upd(x,y,dir+1);
+        upd(x,y,dir+2);
+        upd(x,y,dir+3);
+      }
     }
-
-    //for(4){cctv 있는 곳 검사 -> 방향대로 시야 체크}
-    for(int k = 0; k < 4; k++){
-        int temp_cant_see = check_cctv(k);
-        if(min_cant_see > temp_cant_see) min_cant_see = temp_cant_see;
-    }
-
-    cout<<min_cant_see;
-
-    return 0;
+    int val = 0;
+    for(int i = 0; i < n; i++)
+      for(int j = 0; j < m; j++)
+        val += (board2[i][j]==0);
+    mn = min(mn, val);
+  }
+  cout << mn;
 }
