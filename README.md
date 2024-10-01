@@ -18,5 +18,8 @@
 | 0x0C | 백트래킹 |
 | 0x0D | 시뮬레이션 |
 
+## 백준 문제 리스트
+[바킹독 문제집](https://github.com/encrypted-def/basic-algo-lecture/blob/master/workbook.md)
+
 ## Note
 [노션_코테 공부](https://www.notion.so/fa909965da2345388ad213ef905a9b88?pvs=4)
