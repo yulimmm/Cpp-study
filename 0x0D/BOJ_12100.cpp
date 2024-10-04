@@ -6,17 +6,10 @@ using namespace std;
 int board[20][20];
 int tmp[20][20] = {0};
 int sortBoard[20][20] = {0};
-int dx[4] = {1,0,-1,0};
-int dy[4] = {0,1,0,-1};
 int n;
 int MaxNum = 0;
 
 vector<int>direction = {0,1,2,3}; //x,y
-
-void sort(int dir)
-{
-    
-}
 
 void scroll(int dir)
 {
@@ -64,7 +57,7 @@ void scroll(int dir)
         }
         for(int k = 0; k < n; k++){ //다시 정렬 
             int down = n-1;
-            for(int i = n-1; i > 0; i--){
+            for(int i = n-1; i >= 0; i--){
                 if(tmp[i][k]!=0){
                     sortBoard[down][k] = tmp[i][k];
                     down--;
@@ -90,7 +83,7 @@ void scroll(int dir)
         }
         for(int k = 0; k < n; k++){ //다시 정렬 
             int right = n-1;
-            for(int i = n-1; i > 0; i--){
+            for(int i = n-1; i >= 0; i--){
                 if(tmp[k][i]!=0){
                     sortBoard[k][right] = tmp[k][i];
                     right--;
@@ -157,7 +150,7 @@ int main()
             if(board[i][j]>MaxNum) MaxNum = board[i][j];
         }
     }
-    scroll(3);
+    scroll(1);
     cout<<"---------------\n";
     printtmp();
     cout<<"---------------\n";
