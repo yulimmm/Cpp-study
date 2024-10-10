@@ -1,6 +1,7 @@
 #include <iostream>
 #include <queue>
 #include <utility>
+#include <vector>
 using namespace std;
 
 bool isPuyo; // 뿌요가 터졌는지 여부
